@@ -28,6 +28,38 @@ export const getStatus = (days: number): LicenseStatus => {
   return 'Active';
 };
 
+// Helper to format date as DD/MM/YYYY (for Display)
+export const formatDate = (dateStr: string | null | undefined): string => {
+  if (!dateStr) return '-';
+  const date = new Date(dateStr);
+  if (isNaN(date.getTime())) return '-';
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+};
+
+// Helper to convert date to YYYY-MM-DD (for Input)
+export const toInputDate = (dateStr: string | null | undefined): string => {
+  if (!dateStr) return '';
+  // If already YYYY-MM-DD
+  if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) return dateStr;
+
+  // If DD/MM/YYYY
+  const parts = dateStr.split('/');
+  if (parts.length === 3) {
+    return `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+  }
+
+  // Try to parse standard date string
+  const date = new Date(dateStr);
+  if (!isNaN(date.getTime())) {
+    return date.toISOString().split('T')[0];
+  }
+
+  return '';
+};
+
 // 2. แก้ไข Input Type เป็น License[] (ข้อมูลดิบจาก DB)
 export const processLicenseData = (data: License[]): ComputedLicenseData[] => {
   return data.map(item => {

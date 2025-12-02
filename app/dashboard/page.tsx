@@ -1,16 +1,16 @@
 'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
-import { AlertTriangle, CheckCircle2, Clock, ListFilter, HelpCircle, Bell } from 'lucide-react';
-import { StatsCard } from '@/components/StatsCard';
-import { LicenseTable } from '@/components/LicenseTable';
-import ArchitectureAdvice from '@/components/ArchitectureAdvice';
+import { AlertTriangle, CheckCircle2, Clock, ListFilter, HelpCircle, Bell, LogIn, Settings } from 'lucide-react';
+import { LicenseTable } from '@/components/licenses/LicenseTable';
 import { ComputedLicenseData } from '@/types';
-
-import { ThemeToggle } from '@/components/ThemeToggle';
+import { ThemeToggle } from '@/components/common/ThemeToggle';
 import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
-import { LogIn, Settings } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 
 export default function Home() {
     const [showAdvice, setShowAdvice] = useState(false);
@@ -77,56 +77,52 @@ export default function Home() {
     };
 
     return (
-        <div className="min-h-screen pb-12 bg-[rgb(var(--bg-primary))]">
+        <div className="min-h-screen pb-12 bg-background">
             {/* Navbar */}
-            <nav className="bg-[rgb(var(--bg-primary))] shadow-sm border-b border-[rgb(var(--border-color))] sticky top-0 z-30">
+            <nav className="bg-card shadow-sm border-b sticky top-0 z-30">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex items-center gap-3">
-                            <div className="bg-blue-600 p-2 rounded-lg text-white">
+                            <div className="bg-primary p-2 rounded-lg text-primary-foreground">
                                 <ListFilter size={24} />
                             </div>
                             <div>
-                                <h1 className="text-xl font-bold text-[rgb(var(--text-primary))]">LicenseGuard</h1>
-                                <p className="text-xs text-[rgb(var(--text-secondary))]">ระบบติดตามใบอนุญาต</p>
+                                <h1 className="text-xl font-bold text-foreground">LicenseGuard</h1>
+                                <p className="text-xs text-muted-foreground">ระบบติดตามใบอนุญาต</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-4">
                             <ThemeToggle />
                             {user ? (
-                                <Link
-                                    href="/admin"
-                                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
-                                >
-                                    <Settings size={18} />
-                                    Admin
-                                </Link>
+                                <Button asChild>
+                                    <Link href="/admin">
+                                        <Settings className="mr-2 h-4 w-4" />
+                                        Admin
+                                    </Link>
+                                </Button>
                             ) : (
-                                <Link
-                                    href="/login"
-                                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--accent))] border border-[rgb(var(--border-color))] hover:bg-[rgb(var(--bg-secondary))] rounded-lg transition-colors"
-                                >
-                                    <LogIn size={18} />
-                                    เข้าสู่ระบบ
-                                </Link>
+                                <Button asChild variant="outline">
+                                    <Link href="/login">
+                                        <LogIn className="mr-2 h-4 w-4" />
+                                        เข้าสู่ระบบ
+                                    </Link>
+                                </Button>
                             )}
-                            <button
+                            <Button
+                                variant="ghost"
                                 onClick={() => setShowAdvice(true)}
-                                className="flex items-center gap-2 text-sm font-medium text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--accent))] px-3 py-2 rounded-md hover:bg-[rgb(var(--bg-secondary))] transition-colors"
                             >
-                                <HelpCircle size={18} />
+                                <HelpCircle className="mr-2 h-4 w-4" />
                                 คำแนะนำ Tech Stack
-                            </button>
-                            <button
+                            </Button>
+                            <Button
                                 onClick={handleSimulateNotification}
                                 disabled={notificationStatus !== 'idle'}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-white font-medium transition-all ${notificationStatus === 'sent' ? 'bg-green-500' :
-                                    notificationStatus === 'sending' ? 'bg-gray-400' : 'bg-[#00B900] hover:bg-[#009900]'
-                                    }`}
+                                className="bg-[#00B900] hover:bg-[#009900] text-white"
                             >
-                                <Bell size={18} />
+                                <Bell className="mr-2 h-4 w-4" />
                                 {notificationStatus === 'sending' ? 'Sending...' : notificationStatus === 'sent' ? 'Sent!' : 'Notify LINE'}
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 </div>
@@ -135,27 +131,30 @@ export default function Home() {
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
                 {/* Welcome Banner */}
-                <div className="bg-gradient-to-r from-blue-700 to-blue-900 rounded-2xl p-8 text-white shadow-lg relative overflow-hidden">
-                    <div className="absolute right-0 top-0 h-full w-1/3 bg-white opacity-5 skew-x-12 transform translate-x-12"></div>
-                    <h2 className="text-3xl font-bold mb-2">ภาพรวมใบอนุญาต</h2>
-                    <p className="text-blue-100 max-w-2xl">
-                        ตรวจสอบสถานะวันหมดอายุของใบอนุญาต (Registration), แยกตามบริษัท และแจ้งเตือนอัตโนมัติ ข้อมูลอัปเดตล่าสุด: {new Date().toLocaleDateString('th-TH')}
-                    </p>
-                </div>
+                <Card className="border-primary/20 bg-gradient-to-r from-primary/10 to-primary/5">
+                    <CardHeader>
+                        <CardTitle className="text-3xl">ภาพรวมใบอนุญาต</CardTitle>
+                        <CardDescription className="text-base">
+                            ตรวจสอบสถานะวันหมดอายุของใบอนุญาต (Registration), แยกตามบริษัท และแจ้งเตือนอัตโนมัติ ข้อมูลอัปเดตล่าสุด: {new Date().toLocaleDateString('th-TH')}
+                        </CardDescription>
+                    </CardHeader>
+                </Card>
 
                 {/* Loading State */}
                 {loading && (
                     <div className="flex justify-center items-center py-12">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
                     </div>
                 )}
 
                 {/* Error State */}
                 {error && (
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
-                        <p className="font-semibold">Error</p>
-                        <p>{error}</p>
-                    </div>
+                    <Card className="border-destructive">
+                        <CardHeader>
+                            <CardTitle className="text-destructive">Error</CardTitle>
+                            <CardDescription>{error}</CardDescription>
+                        </CardHeader>
+                    </Card>
                 )}
 
                 {/* Data Display - Only show when not loading and no error */}
@@ -163,82 +162,103 @@ export default function Home() {
                     <>
                         {/* Stats Grid */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            <StatsCard
-                                title="ใบอนุญาตทั้งหมด"
-                                count={stats.total}
-                                icon={<ListFilter className="text-blue-600" size={24} />}
-                                colorClass="bg-blue-100"
-                                isActive={filter === 'all'}
+                            <Card
+                                className={`cursor-pointer transition-all ${filter === 'all' ? 'ring-2 ring-primary' : 'hover:shadow-lg'}`}
                                 onClick={() => setFilter('all')}
-                            />
-                            <StatsCard
-                                title="หมดอายุแล้ว"
-                                count={stats.expired}
-                                icon={<AlertTriangle className="text-red-600" size={24} />}
-                                colorClass="bg-red-100"
-                                isActive={filter === 'expired'}
+                            >
+                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                    <CardTitle className="text-sm font-medium">ใบอนุญาตทั้งหมด</CardTitle>
+                                    <ListFilter className="h-4 w-4 text-muted-foreground" />
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="text-2xl font-bold">{stats.total}</div>
+                                    <p className="text-xs text-muted-foreground">รายการทั้งหมด</p>
+                                </CardContent>
+                            </Card>
+
+                            <Card
+                                className={`cursor-pointer transition-all ${filter === 'expired' ? 'ring-2 ring-destructive' : 'hover:shadow-lg'}`}
                                 onClick={() => setFilter('expired')}
-                            />
-                            <StatsCard
-                                title="ใกล้หมดอายุ (90 วัน)"
-                                count={stats.warning}
-                                icon={<Clock className="text-yellow-600" size={24} />}
-                                colorClass="bg-yellow-100"
-                                isActive={filter === 'warning'}
+                            >
+                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                    <CardTitle className="text-sm font-medium">หมดอายุแล้ว</CardTitle>
+                                    <AlertTriangle className="h-4 w-4 text-destructive" />
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="text-2xl font-bold text-destructive">{stats.expired}</div>
+                                    <p className="text-xs text-muted-foreground">ต้องดำเนินการด่วน</p>
+                                </CardContent>
+                            </Card>
+
+                            <Card
+                                className={`cursor-pointer transition-all ${filter === 'warning' ? 'ring-2 ring-yellow-500' : 'hover:shadow-lg'}`}
                                 onClick={() => setFilter('warning')}
-                            />
-                            <StatsCard
-                                title="ใช้งานปกติ"
-                                count={stats.active}
-                                icon={<CheckCircle2 className="text-green-600" size={24} />}
-                                colorClass="bg-green-100"
-                                isActive={filter === 'active'}
+                            >
+                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                    <CardTitle className="text-sm font-medium">ใกล้หมดอายุ (90 วัน)</CardTitle>
+                                    <Clock className="h-4 w-4 text-yellow-500" />
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="text-2xl font-bold text-yellow-600">{stats.warning}</div>
+                                    <p className="text-xs text-muted-foreground">ควรเตรียมต่ออายุ</p>
+                                </CardContent>
+                            </Card>
+
+                            <Card
+                                className={`cursor-pointer transition-all ${filter === 'active' ? 'ring-2 ring-green-500' : 'hover:shadow-lg'}`}
                                 onClick={() => setFilter('active')}
-                            />
+                            >
+                                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                    <CardTitle className="text-sm font-medium">ใช้งานปกติ</CardTitle>
+                                    <CheckCircle2 className="h-4 w-4 text-green-500" />
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="text-2xl font-bold text-green-600">{stats.active}</div>
+                                    <p className="text-xs text-muted-foreground">ยังไม่ต้องดำเนินการ</p>
+                                </CardContent>
+                            </Card>
                         </div>
 
                         {/* Controls */}
-                        <div className="flex flex-col sm:flex-row justify-between items-center bg-[rgb(var(--bg-primary))] p-4 rounded-lg shadow-sm border border-[rgb(var(--border-color))] gap-4">
-                            <div className="flex items-center gap-4 w-full sm:w-auto">
-                                <span className="text-sm font-medium text-[rgb(var(--text-primary))] whitespace-nowrap">Group By:</span>
-                                <div className="flex rounded-md shadow-sm w-full sm:w-auto" role="group">
-                                    <button
-                                        type="button"
-                                        onClick={() => setGroupBy('none')}
-                                        className={`px-4 py-2 text-sm font-medium rounded-l-lg border transition-colors ${groupBy === 'none'
-                                            ? 'bg-blue-600 text-white border-blue-600'
-                                            : 'bg-[rgb(var(--bg-secondary))] text-[rgb(var(--text-primary))] border-[rgb(var(--border-color))] hover:bg-[rgb(var(--bg-tertiary))]'
-                                            }`}
-                                    >
-                                        None
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => setGroupBy('company')}
-                                        className={`px-4 py-2 text-sm font-medium border-t border-b transition-colors ${groupBy === 'company'
-                                            ? 'bg-blue-600 text-white border-blue-600'
-                                            : 'bg-[rgb(var(--bg-secondary))] text-[rgb(var(--text-primary))] border-[rgb(var(--border-color))] hover:bg-[rgb(var(--bg-tertiary))]'
-                                            }`}
-                                    >
-                                        Company
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => setGroupBy('tag')}
-                                        className={`px-4 py-2 text-sm font-medium rounded-r-lg border transition-colors ${groupBy === 'tag'
-                                            ? 'bg-blue-600 text-white border-blue-600'
-                                            : 'bg-[rgb(var(--bg-secondary))] text-[rgb(var(--text-primary))] border-[rgb(var(--border-color))] hover:bg-[rgb(var(--bg-tertiary))]'
-                                            }`}
-                                    >
-                                        Tag
-                                    </button>
-                                </div>
-                            </div>
+                        <Card>
+                            <CardContent className="pt-6">
+                                <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+                                    <div className="flex items-center gap-4 w-full sm:w-auto">
+                                        <span className="text-sm font-medium whitespace-nowrap">Group By:</span>
+                                        <div className="inline-flex rounded-md shadow-sm" role="group">
+                                            <Button
+                                                type="button"
+                                                variant={groupBy === 'none' ? 'default' : 'outline'}
+                                                onClick={() => setGroupBy('none')}
+                                                className="rounded-r-none"
+                                            >
+                                                None
+                                            </Button>
+                                            <Button
+                                                type="button"
+                                                variant={groupBy === 'company' ? 'default' : 'outline'}
+                                                onClick={() => setGroupBy('company')}
+                                                className="rounded-none border-l-0"
+                                            >
+                                                Company
+                                            </Button>
+                                            <Button
+                                                type="button"
+                                                variant={groupBy === 'tag' ? 'default' : 'outline'}
+                                                onClick={() => setGroupBy('tag')}
+                                                className="rounded-l-none border-l-0"
+                                            >
+                                                Tag
+                                            </Button>
+                                        </div>
+                                    </div>
 
-                            <div className="text-sm text-[rgb(var(--text-secondary))]">
-                                แสดงข้อมูล {filteredData.length} รายการ จากทั้งหมด {allData.length}
-                            </div>
-                        </div>
+                                    <Badge variant="secondary" className="text-sm">
+                                        แสดงข้อมูล {filteredData.length} รายการ จากทั้งหมด {allData.length}
+                                    </Badge>
+                                </div>
+                            </CardContent>
+                        </Card>
 
                         {/* Main Table Content */}
                         <LicenseTable data={filteredData} groupBy={groupBy} />
@@ -246,9 +266,6 @@ export default function Home() {
                 )}
 
             </main>
-
-            {/* Tech Stack Modal  {showAdvice && <ArchitectureAdvice onClose={() => setShowAdvice(false)} />}*/}
-
         </div>
     );
 }

@@ -1,18 +1,19 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
   "/api/licenses/[id]/route": "app/api/licenses/[id]/route.js",
-  "/api/cron/check-expiry/route": "app/api/cron/check-expiry/route.js",
   "/api/licenses/create/route": "app/api/licenses/create/route.js",
-  "/api/companies/[id]/route": "app/api/companies/[id]/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/cron/check-expiry/route": "app/api/cron/check-expiry/route.js",
   "/api/companies/route": "app/api/companies/route.js",
-  "/api/scopes/route": "app/api/scopes/route.js",
-  "/api/tags/[id]/route": "app/api/tags/[id]/route.js",
-  "/api/scopes/[id]/route": "app/api/scopes/[id]/route.js",
   "/api/licenses/route": "app/api/licenses/route.js",
   "/api/tags/route": "app/api/tags/route.js",
-  "/admin/settings/page": "app/admin/settings/page.js",
+  "/api/scopes/route": "app/api/scopes/route.js",
+  "/api/companies/[id]/route": "app/api/companies/[id]/route.js",
+  "/api/scopes/[id]/route": "app/api/scopes/[id]/route.js",
+  "/api/tags/[id]/route": "app/api/tags/[id]/route.js",
   "/admin/page": "app/admin/page.js",
-  "/login/page": "app/login/page.js",
+  "/admin/settings/page": "app/admin/settings/page.js",
   "/dashboard/page": "app/dashboard/page.js",
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/test-theme/page": "app/test-theme/page.js",
+  "/login/page": "app/login/page.js"
 }

@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { NextResponse } from 'next/server';
 import { ComputedLicenseData } from '@/types';
+import { formatDate } from '@/utils/dateUtils';
 
 export const dynamic = 'force-dynamic';
 
@@ -34,14 +35,14 @@ export async function GET() {
             return {
                 id: license.id,
                 registrationNo: license.registration_no,
-                company: license.companies?.name || license.company || 'Unknown', // Fallback to old column if needed
+                company: license.companies?.name || license.company || 'Unknown',
                 tag: license.tags?.name || license.tag || '-',
                 standardScope: license.scopes?.standard_code || license.standard_scope || '-',
                 criteriaScope: license.scopes?.description || license.criteria_scope || '-',
                 certificationAuthority: license.certification_authority || '-',
-                effectiveDate: license.effective_date ? new Date(license.effective_date).toLocaleDateString('th-TH') : '-',
-                validUntil: new Date(license.valid_until).toLocaleDateString('th-TH'),
-                status: license.status || computedStatus, // Use DB status or computed
+                effectiveDate: formatDate(license.effective_date),
+                validUntil: formatDate(license.valid_until),
+                status: license.status || computedStatus,
                 daysRemaining,
                 computedStatus,
 

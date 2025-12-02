@@ -3,15 +3,16 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import { ThemeToggle } from '@/components/ThemeToggle';
-import { LicenseForm } from '@/components/LicenseForm';
-import { LicenseTable } from '@/components/LicenseTable';
-import { Plus, LogOut, Home, Settings } from 'lucide-react';
-import Link from 'next/link';
+import { LicenseForm } from '@/components/licenses/LicenseForm';
+import { LicenseTable } from '@/components/licenses/LicenseTable';
+import { Plus } from 'lucide-react';
 import { ComputedLicenseData } from '@/types';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { AdminNav } from '@/components/common/AdminNav';
 
 export default function AdminPage() {
-    const { user, loading: authLoading, signOut } = useAuth();
+    const { user, loading: authLoading } = useAuth();
     const router = useRouter();
     const [licenses, setLicenses] = useState<ComputedLicenseData[]>([]);
     const [loading, setLoading] = useState(true);
@@ -68,89 +69,43 @@ export default function AdminPage() {
         setEditingLicense(null);
     };
 
-    const handleLogout = async () => {
-        await signOut();
-        router.push('/');
-    };
-
     if (authLoading || !user) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-[rgb(var(--bg-primary))]">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            <div className="min-h-screen flex items-center justify-center bg-background">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-[rgb(var(--bg-secondary))]">
-            {/* Navbar */}
-            <nav className="bg-[rgb(var(--bg-primary))] shadow-sm border-b border-[rgb(var(--border-color))]">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between h-16">
-                        <div className="flex items-center gap-4">
-                            <h1 className="text-xl font-bold text-[rgb(var(--text-primary))]">
-                                Admin Dashboard
-                            </h1>
-                            <Link
-                                href="/"
-                                className="flex items-center gap-2 text-sm text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--accent))]"
-                            >
-                                <Home size={18} />
-                                Dashboard
-                            </Link>
-                            <Link
-                                href="/admin/settings"
-                                className="flex items-center gap-2 text-sm text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--accent))]"
-                            >
-                                <Settings size={18} />
-                                จัดการข้อมูลหลัก
-                            </Link>
-                        </div>
-                        <div className="flex items-center gap-4">
-                            <span className="text-sm text-[rgb(var(--text-secondary))]">
-                                {user.email}
-                            </span>
-                            <ThemeToggle />
-                            <button
-                                onClick={handleLogout}
-                                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors"
-                            >
-                                <LogOut size={18} />
-                                ออกจากระบบ
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </nav>
+        <div className="min-h-screen bg-background">
+            <AdminNav />
 
             {/* Main Content */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="mb-6 flex justify-between items-center">
-                    <h2 className="text-2xl font-bold text-[rgb(var(--text-primary))]">
+                    <h2 className="text-2xl font-bold text-foreground">
                         จัดการใบอนุญาต
                     </h2>
-                    <button
-                        onClick={() => setShowForm(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                    >
-                        <Plus size={20} />
+                    <Button onClick={() => setShowForm(true)}>
+                        <Plus className="mr-2 h-4 w-4" />
                         เพิ่มใบอนุญาตใหม่
-                    </button>
+                    </Button>
                 </div>
 
                 {loading ? (
                     <div className="flex justify-center py-12">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
                     </div>
                 ) : (
-                    <div className="bg-[rgb(var(--bg-primary))] rounded-lg shadow overflow-hidden border border-[rgb(var(--border-color))]">
+                    <Card>
                         <LicenseTable
                             data={licenses}
                             groupBy="none"
                             onEdit={handleEdit}
                             onDelete={handleDelete}
                         />
-                    </div>
+                    </Card>
                 )}
             </div>
 

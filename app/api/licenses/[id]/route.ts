@@ -1,20 +1,19 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { formatDate } from '@/utils/dateUtils';
 
-// แก้ไข Type ของ params เป็น Promise
 export async function DELETE(
     request: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         const supabase = await createClient();
-        // เพิ่มการ await params
         const { id } = await params;
 
         const { error } = await supabase
             .from('licenses')
             .delete()
-            .eq('id', id); // ใช้ id ที่ await มาแล้ว
+            .eq('id', id);
 
         if (error) {
             return NextResponse.json({ error: error.message }, { status: 500 });
@@ -29,14 +28,12 @@ export async function DELETE(
     }
 }
 
-// แก้ไข Type ของ params เป็น Promise
 export async function GET(
     request: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         const supabase = await createClient();
-        // เพิ่มการ await params
         const { id } = await params;
 
         const { data: license, error } = await supabase
@@ -47,7 +44,7 @@ export async function GET(
                 tags (id, name),
                 scopes (id, standard_code, description)
             `)
-            .eq('id', id) // ใช้ id ที่ await มาแล้ว
+            .eq('id', id)
             .single();
 
         if (error) {
@@ -63,8 +60,8 @@ export async function GET(
             standardScope: license.scopes?.standard_code || license.standard_scope || '-',
             criteriaScope: license.scopes?.description || license.criteria_scope || '-',
             certificationAuthority: license.certification_authority || '-',
-            effectiveDate: license.effective_date,
-            validUntil: license.valid_until,
+            effectiveDate: formatDate(license.effective_date),
+            validUntil: formatDate(license.valid_until),
             status: license.status,
             remark: license.remark,
 
@@ -83,14 +80,12 @@ export async function GET(
     }
 }
 
-// แก้ไข Type ของ params เป็น Promise
 export async function PUT(
     request: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         const supabase = await createClient();
-        // เพิ่มการ await params
         const { id } = await params;
 
         const body = await request.json();
@@ -98,7 +93,7 @@ export async function PUT(
         const { error } = await supabase
             .from('licenses')
             .update(body)
-            .eq('id', id); // ใช้ id ที่ await มาแล้ว
+            .eq('id', id);
 
         if (error) {
             return NextResponse.json({ error: error.message }, { status: 500 });

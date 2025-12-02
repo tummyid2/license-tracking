@@ -68,6 +68,7 @@ export interface ComputedLicenseData {
   companyId?: string;
   tagId?: string;
   scopeId?: string;
+  remark?: string;
 }
 
 export interface GroupedData {
