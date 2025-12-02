@@ -88,12 +88,6 @@
       "regex": "^/_not\\-found(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/_not\\-found(?:/)?$"
-    },
-    {
-      "page": "/test-theme",
-      "regex": "^/test\\-theme(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/test\\-theme(?:/)?$"
     }
   ],
   "dataRoutes": [],

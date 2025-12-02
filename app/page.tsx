@@ -87,7 +87,7 @@ export default function Home() {
                                 <ListFilter size={24} />
                             </div>
                             <div>
-                                <h1 className="text-xl font-bold text-foreground">LicenseGuard</h1>
+                                <h1 className="text-xl font-bold text-foreground">License Tracking System</h1>
                                 <p className="text-xs text-muted-foreground">ระบบติดตามใบอนุญาต</p>
                             </div>
                         </div>
@@ -109,13 +109,6 @@ export default function Home() {
                                 </Button>
                             )}
                             <Button
-                                variant="ghost"
-                                onClick={() => setShowAdvice(true)}
-                            >
-                                <HelpCircle className="mr-2 h-4 w-4" />
-                                คำแนะนำ Tech Stack
-                            </Button>
-                            <Button
                                 onClick={handleSimulateNotification}
                                 disabled={notificationStatus !== 'idle'}
                                 className="bg-[#00B900] hover:bg-[#009900] text-white"
@@ -131,7 +124,7 @@ export default function Home() {
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
 
                 {/* Welcome Banner */}
-                <Card className="border-primary/20 bg-gradient-to-r from-primary/10 to-primary/5">
+                <Card className="border-primary/20 bg-primary/5 dark:bg-primary/5">
                     <CardHeader>
                         <CardTitle className="text-3xl">ภาพรวมใบอนุญาต</CardTitle>
                         <CardDescription className="text-base">

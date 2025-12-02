@@ -1,19 +1,18 @@
 {
-  "/api/licenses/[id]/route": "/api/licenses/[id]",
-  "/api/licenses/create/route": "/api/licenses/create",
   "/_not-found/page": "/_not-found",
   "/api/cron/check-expiry/route": "/api/cron/check-expiry",
-  "/api/companies/route": "/api/companies",
-  "/api/licenses/route": "/api/licenses",
-  "/api/tags/route": "/api/tags",
-  "/api/scopes/route": "/api/scopes",
-  "/api/companies/[id]/route": "/api/companies/[id]",
+  "/api/licenses/create/route": "/api/licenses/create",
+  "/api/licenses/[id]/route": "/api/licenses/[id]",
   "/api/scopes/[id]/route": "/api/scopes/[id]",
+  "/api/companies/route": "/api/companies",
+  "/api/companies/[id]/route": "/api/companies/[id]",
+  "/api/licenses/route": "/api/licenses",
+  "/api/scopes/route": "/api/scopes",
+  "/api/tags/route": "/api/tags",
   "/api/tags/[id]/route": "/api/tags/[id]",
   "/admin/page": "/admin",
   "/admin/settings/page": "/admin/settings",
-  "/dashboard/page": "/dashboard",
+  "/login/page": "/login",
   "/page": "/",
-  "/test-theme/page": "/test-theme",
-  "/login/page": "/login"
+  "/dashboard/page": "/dashboard"
 }
