@@ -1,7 +1,4 @@
 {
   "/api/licenses/route": "app/api/licenses/route.js",
-  "/api/notify/line/route": "app/api/notify/line/route.js",
-  "/page": "app/page.js",
-  "/admin/page": "app/admin/page.js",
-  "/admin/settings/page": "app/admin/settings/page.js"
+  "/page": "app/page.js"
 }
