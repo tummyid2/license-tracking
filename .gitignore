@@ -47,7 +47,7 @@ out/
 .vercel
 
 # Supabase Local Development (ถ้ามีการใช้ Supabase CLI)
-supabase/
+
 supabase/.temp/
 supabase/db/
 supabase/migrations/
