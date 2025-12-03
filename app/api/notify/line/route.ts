@@ -88,6 +88,17 @@ function formatMessage(licenses: any[], type: string): string {
 
 export async function POST(req: NextRequest) {
     try {
+        // Check authentication
+        const supabase = await createClient();
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+        if (authError || !user) {
+            return NextResponse.json(
+                { error: 'Unauthorized', message: 'กรุณาเข้าสู่ระบบก่อนส่งการแจ้งเตือน' },
+                { status: 401 }
+            );
+        }
+
         const body: NotificationRequest = await req.json();
         const { licenses = [], force = false } = body;
 
@@ -147,7 +158,6 @@ export async function POST(req: NextRequest) {
         });
 
         // Send notifications
-        const supabase = await createClient();
         let messagesSent = 0;
         const logEntries = [];
 

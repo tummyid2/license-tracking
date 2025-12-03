@@ -57,7 +57,7 @@ export default function LoginPage() {
         setError(error.message || 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ');
         setLoading(false);
       } else {
-        router.push('/admin');
+        router.push('/dashboard');
         router.refresh(); // Refresh to update middleware state
       }
     } catch (err) {

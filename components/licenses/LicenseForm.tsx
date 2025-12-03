@@ -46,7 +46,6 @@ const formSchema = z.object({
     valid_until: z.date({
         message: "กรุณาระบุวันหมดอายุ",
     }),
-    status: z.enum(["Active", "Inactive", "Pending"]),
     remark: z.string().optional(),
 });
 
@@ -70,7 +69,6 @@ export function LicenseForm({ onClose, onSuccess, editData }: LicenseFormProps) 
             tag_id: '',
             scope_id: '',
             certification_authority: '',
-            status: 'Active',
             remark: '',
         },
     });
@@ -105,7 +103,6 @@ export function LicenseForm({ onClose, onSuccess, editData }: LicenseFormProps) 
                 certification_authority: editData.certificationAuthority,
                 effective_date: editData.effectiveDate ? new Date(editData.effectiveDate.split('/').reverse().join('-')) : undefined,
                 valid_until: editData.validUntil ? new Date(editData.validUntil.split('/').reverse().join('-')) : undefined,
-                status: editData.status as "Active" | "Inactive" | "Pending",
                 remark: editData.remark || '',
             });
         }
@@ -336,29 +333,6 @@ export function LicenseForm({ onClose, onSuccess, editData }: LicenseFormProps) 
                                 )}
                             />
                         </div>
-
-                        <FormField
-                            control={form.control}
-                            name="status"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>สถานะ</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="เลือกสถานะ" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            <SelectItem value="Active">Active</SelectItem>
-                                            <SelectItem value="Inactive">Inactive</SelectItem>
-                                            <SelectItem value="Pending">Pending</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
 
                         <FormField
                             control={form.control}

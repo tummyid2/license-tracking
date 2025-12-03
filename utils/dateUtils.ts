@@ -80,7 +80,7 @@ export const processLicenseData = (data: License[]): ComputedLicenseData[] => {
       certificationAuthority: item.certification_authority || '-',
       effectiveDate: item.effective_date || '',
       validUntil: item.valid_until,
-      status: item.status,
+
       remark: item.remark,
 
       // Computed fields

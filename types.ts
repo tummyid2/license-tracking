@@ -32,6 +32,7 @@ export interface Scope {
 
 // Updated License Interface
 export interface License {
+  status: string;
   id: string;
   registration_no: string;
   company_id: string;
@@ -40,7 +41,6 @@ export interface License {
   valid_until: string; // YYYY-MM-DD
   effective_date?: string; // YYYY-MM-DD
   certification_authority?: string;
-  status: string;
   remark?: string;
 
   // Joined Data (Optional, present when fetched with joins)
@@ -60,10 +60,9 @@ export interface ComputedLicenseData {
   certificationAuthority: string;
   effectiveDate: string;
   validUntil: string;
-  status: string;
   daysRemaining: number;
   computedStatus: LicenseStatus;
-
+  status: string;
   // Raw IDs for editing
   companyId?: string;
   tagId?: string;

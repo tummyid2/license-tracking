@@ -42,7 +42,7 @@ export async function GET() {
                 certificationAuthority: license.certification_authority || '-',
                 effectiveDate: formatDate(license.effective_date),
                 validUntil: formatDate(license.valid_until),
-                status: license.status || computedStatus,
+                status: computedStatus,
                 daysRemaining,
                 computedStatus,
 

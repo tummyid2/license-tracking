@@ -7,10 +7,24 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Node dependencies
 node_modules
 dist
 dist-ssr
 *.local
+
+# Build output
+.next/
+out/
+
+# Dependency caches
+/node_modules
+/.pnp
+.pnp.js
+/npm-cache
+/npm-debug.log
+/yarn-cache
+/yarn-debug.log
 
 # Editor directories and files
 .vscode/*
@@ -22,3 +36,18 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment files (สำคัญมากสำหรับการปกปิด API Keys)
+.env.local
+.env
+.env.development.local
+.env.production.local
+
+# Vercel and Deployment
+.vercel
+
+# Supabase Local Development (ถ้ามีการใช้ Supabase CLI)
+supabase/
+supabase/.temp/
+supabase/db/
+supabase/migrations/
