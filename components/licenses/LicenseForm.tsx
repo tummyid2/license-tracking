@@ -5,10 +5,18 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { format } from 'date-fns';
-import { CalendarIcon, Loader2 } from 'lucide-react';
+import { CalendarIcon, Loader2, Check, ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from "@/components/ui/command"
 import {
     Form,
     FormControl,
@@ -60,6 +68,7 @@ export function LicenseForm({ onClose, onSuccess, editData }: LicenseFormProps) 
     const [tags, setTags] = useState<Tag[]>([]);
     const [scopes, setScopes] = useState<Scope[]>([]);
     const [loading, setLoading] = useState(false);
+    const [openCompany, setOpenCompany] = useState(false);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -171,18 +180,60 @@ export function LicenseForm({ onClose, onSuccess, editData }: LicenseFormProps) 
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>บริษัท</FormLabel>
-                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                            <FormControl>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="เลือกบริษัท" />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>
-                                                {companies.map((c) => (
-                                                    <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
+                                        <Popover open={openCompany} onOpenChange={setOpenCompany} modal={true}>
+                                            <PopoverTrigger asChild>
+                                                <FormControl>
+                                                    <Button
+                                                        variant="outline"
+                                                        role="combobox"
+                                                        aria-expanded={openCompany}
+                                                        className={cn(
+                                                            "w-full justify-between",
+                                                            !field.value && "text-muted-foreground"
+                                                        )}
+                                                    >
+                                                        <span className="truncate">
+                                                            {field.value
+                                                                ? companies.find(
+                                                                    (company) => company.id === field.value
+                                                                )?.name
+                                                                : "เลือกบริษัท"}
+                                                        </span>
+                                                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                    </Button>
+                                                </FormControl>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                                                <Command>
+                                                    <CommandInput placeholder="ค้นหาบริษัท..." />
+                                                    <CommandList className="max-h-[200px] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+                                                        <CommandEmpty>ไม่พบบริษัท</CommandEmpty>
+                                                        <CommandGroup>
+                                                            {companies.map((company) => (
+                                                                <CommandItem
+                                                                    value={company.name}
+                                                                    key={company.id}
+                                                                    onSelect={() => {
+                                                                        form.setValue("company_id", company.id)
+                                                                        setOpenCompany(false)
+                                                                    }}
+                                                                >
+                                                                    <Check
+                                                                        className={cn(
+                                                                            "mr-2 h-4 w-4",
+                                                                            company.id === field.value
+                                                                                ? "opacity-100"
+                                                                                : "opacity-0"
+                                                                        )}
+                                                                    />
+                                                                    {company.name}
+                                                                </CommandItem>
+                                                            ))}
+                                                        </CommandGroup>
+                                                    </CommandList>
+                                                </Command>
+                                            </PopoverContent>
+                                        </Popover>
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -284,6 +335,9 @@ export function LicenseForm({ onClose, onSuccess, editData }: LicenseFormProps) 
                                                         date < new Date("1900-01-01")
                                                     }
                                                     initialFocus
+                                                    captionLayout="dropdown"
+                                                    fromYear={1900}
+                                                    toYear={2100}
                                                 />
                                             </PopoverContent>
                                         </Popover>
@@ -325,6 +379,9 @@ export function LicenseForm({ onClose, onSuccess, editData }: LicenseFormProps) 
                                                         date < new Date("1900-01-01")
                                                     }
                                                     initialFocus
+                                                    captionLayout="dropdown"
+                                                    fromYear={1900}
+                                                    toYear={2100}
                                                 />
                                             </PopoverContent>
                                         </Popover>
