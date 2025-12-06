@@ -11,7 +11,7 @@ import { Plus, Bell } from 'lucide-react';
 import { ComputedLicenseData } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { AdminNav } from '@/components/common/AdminNav';
+
 
 export default function AdminPage() {
     const { user, loading: authLoading } = useAuth();
@@ -30,11 +30,7 @@ export default function AdminPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [searchType, setSearchType] = useState<'registration' | 'company' | 'tag'>('registration');
 
-    useEffect(() => {
-        if (!authLoading && !user) {
-            router.push('/login');
-        }
-    }, [user, authLoading, router]);
+
 
     useEffect(() => {
         if (user) {
@@ -160,19 +156,8 @@ export default function AdminPage() {
         setCurrentPage(1);
     }, [searchQuery, searchType, itemsPerPage]);
 
-    if (authLoading || !user) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-background">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-            </div>
-        );
-    }
-
     return (
-        <div className="min-h-screen bg-background">
-            <AdminNav />
-
-            {/* Main Content */}
+        <>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
                     <h2 className="text-2xl font-bold text-foreground self-start sm:self-center">
@@ -247,6 +232,6 @@ export default function AdminPage() {
                     editData={editingLicense}
                 />
             )}
-        </div>
+        </>
     );
 }

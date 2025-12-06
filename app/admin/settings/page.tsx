@@ -25,7 +25,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { AdminNav } from '@/components/common/AdminNav';
+
 
 export default function SettingsPage() {
     const { user, loading: authLoading } = useAuth();
@@ -38,11 +38,7 @@ export default function SettingsPage() {
     const [editingItem, setEditingItem] = useState<any>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-    useEffect(() => {
-        if (!authLoading && !user) {
-            router.push('/login');
-        }
-    }, [user, authLoading, router]);
+
 
     useEffect(() => {
         if (user) {
@@ -213,19 +209,8 @@ export default function SettingsPage() {
         );
     };
 
-    if (authLoading || !user) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-background">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-            </div>
-        );
-    }
-
     return (
-        <div className="min-h-screen bg-background">
-            <AdminNav />
-
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-2xl font-bold text-foreground">จัดการข้อมูลหลัก (Master Data)</h1>
                     <Button
@@ -285,6 +270,5 @@ export default function SettingsPage() {
 
                 {renderForm()}
             </div>
-        </div>
     );
 }

@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { ThemeToggle } from '@/components/common/ThemeToggle';
-import { LogOut, Home, Settings, FileText } from 'lucide-react';
+import { LogOut, Home, Settings, FileText, Bell } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
@@ -45,6 +45,12 @@ export function AdminNav() {
                                     ตั้งค่า
                                 </Link>
                             </Button>
+                            <Button asChild variant="ghost" size="sm">
+                                <Link href="/admin/notifications">
+                                    <Bell className="mr-2 h-4 w-4" />
+                                    ประวัติการส่ง
+                                </Link>
+                            </Button>
                         </div>
 
                         {/* Mobile Links (Icon only) */}
@@ -62,6 +68,11 @@ export function AdminNav() {
                             <Button asChild variant="ghost" size="sm" className="px-2">
                                 <Link href="/admin/settings">
                                     <Settings className="h-5 w-5" />
+                                </Link>
+                            </Button>
+                            <Button asChild variant="ghost" size="sm" className="px-2">
+                                <Link href="/admin/notifications">
+                                    <Bell className="h-5 w-5" />
                                 </Link>
                             </Button>
                         </div>
