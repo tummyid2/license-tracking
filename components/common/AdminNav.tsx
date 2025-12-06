@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { ThemeToggle } from '@/components/common/ThemeToggle';
-import { LogOut, Home, Settings } from 'lucide-react';
+import { LogOut, Home, Settings, FileText } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
@@ -35,8 +35,14 @@ export function AdminNav() {
                             </Button>
                             <Button asChild variant="ghost" size="sm">
                                 <Link href="/admin">
-                                    <Settings className="mr-2 h-4 w-4" />
+                                    <FileText className="mr-2 h-4 w-4" />
                                     จัดการใบอนุญาต
+                                </Link>
+                            </Button>
+                            <Button asChild variant="ghost" size="sm">
+                                <Link href="/admin/settings">
+                                    <Settings className="mr-2 h-4 w-4" />
+                                    ตั้งค่า
                                 </Link>
                             </Button>
                         </div>
@@ -50,6 +56,11 @@ export function AdminNav() {
                             </Button>
                             <Button asChild variant="ghost" size="sm" className="px-2">
                                 <Link href="/admin">
+                                    <FileText className="h-5 w-5" />
+                                </Link>
+                            </Button>
+                            <Button asChild variant="ghost" size="sm" className="px-2">
+                                <Link href="/admin/settings">
                                     <Settings className="h-5 w-5" />
                                 </Link>
                             </Button>
